@@ -1,6 +1,8 @@
 package uz.pdp.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.dao.UserDAO;
 import uz.pdp.model.User;
 
 import java.util.ArrayList;
@@ -8,28 +10,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private final List<User> users = new ArrayList<>();
+    private final UserDAO userDAO;
 
-
-    public void Save(User user) {
-        users.add(user);
+    public void SaveUser(User user) {
+        userDAO.saveUser(user);
     }
 
-    public boolean existsByUserName(String userName) {
-        return users.stream().anyMatch(user -> user.getUserName().equalsIgnoreCase(userName));
-    }
-
-    public Optional<User> findByUserName(String userName) {
-        return users.stream()
-                .filter(user -> user.getUserName().equalsIgnoreCase(userName))
-                .findFirst();
-    }
-
-    public Optional<User> login(String userName,String password) {
-        return users.stream()
-                .filter(user -> user.getUserName().equalsIgnoreCase(userName)
-                        && user.getPassword().equalsIgnoreCase(password)).findFirst();
+    public Optional<User> login(String userName, String password) {
+        Optional<User> optionalUser = userDAO.login(userName);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getPassword().equalsIgnoreCase(password)){
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 }

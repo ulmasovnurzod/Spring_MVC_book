@@ -23,7 +23,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(this.applicationContext);
-        templateResolver.setPrefix("classPath:/views/");
+        templateResolver.setPrefix("classpath:/views/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCacheable(true);
@@ -44,6 +44,10 @@ public class WebMVCConfig implements WebMvcConfigurer {
         viewResolver.setOrder(1);
         return viewResolver;
     }
+
+
+
+
 
 
 }

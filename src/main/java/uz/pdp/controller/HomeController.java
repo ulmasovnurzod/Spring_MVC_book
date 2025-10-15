@@ -8,6 +8,10 @@ import uz.pdp.model.User;
 
 @Controller
 public class HomeController {
+
+
+
+
     @GetMapping("/home")
     public ModelAndView home(HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -20,8 +24,9 @@ public class HomeController {
 
         mv.setViewName("home");
         mv.addObject("fullName", currentUser.getFullName());
-        mv.addObject("age", currentUser.getAge());
         mv.addObject("userName", currentUser.getUserName());
+        mv.addObject("age", currentUser.getAge());
+
         return mv;
     }
 }

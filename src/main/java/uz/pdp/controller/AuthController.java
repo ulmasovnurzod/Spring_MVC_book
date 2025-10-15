@@ -19,6 +19,7 @@ public class AuthController {
     @GetMapping("/register")
     public ModelAndView registerPage() {
         ModelAndView modelAndView = new ModelAndView();
+
         modelAndView.setViewName("register");
         modelAndView.addObject("user", new User());
         return modelAndView;
@@ -28,18 +29,9 @@ public class AuthController {
     public ModelAndView register(@ModelAttribute("user") User user) {
 
         ModelAndView modelAndView = new ModelAndView();
-
-        if (userService.existsByUserName(user.getUserName())) {
-
-            modelAndView.setViewName("register");
-            modelAndView.addObject("error", "Bunday user bor");
-            return modelAndView;
-        }
-        userService.Save(user);
-        modelAndView.setViewName("login");
-        modelAndView.addObject("success", "Ro'yxatdan muvaffaqiyatli o‘tdingiz! Endi login qiling.");
+        modelAndView.setViewName("redirect:/login");
+        userService.SaveUser(user);
         return modelAndView;
-
     }
 
     @GetMapping("/login")
@@ -57,11 +49,11 @@ public class AuthController {
         return userService.login(loginUser.getUserName(), loginUser.getPassword())
                 .map(user -> {
                     session.setAttribute("currentUser", user);
-                    modelAndView.setViewName("redirect:/home");
+                    modelAndView.setViewName("redirect:/books");
                     return modelAndView;
                 })
                 .orElseGet(() -> {
-                    modelAndView.setViewName("login");
+                    modelAndView.setViewName("books");
                     modelAndView.addObject("error", "Username yoki parol noto‘g‘ri!");
                     return modelAndView;
                 });

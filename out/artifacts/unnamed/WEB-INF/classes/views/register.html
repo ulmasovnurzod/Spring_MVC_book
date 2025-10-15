@@ -4,73 +4,134 @@
     <meta charset="UTF-8">
     <title>Ro'yxatdan o'tish</title>
     <style>
+        /* Umumiy sahifa dizayni */
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px auto;
-            width: 400px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #ACB6E5, #74ebd5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        h2 {
+
+        /* Ro'yxatdan o'tish karta */
+        .register-container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 350px;
             text-align: center;
         }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #333333;
+        }
+
         label {
             display: block;
-            margin-top: 10px;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555555;
         }
-        input {
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"] {
             width: 100%;
-            padding: 6px;
-            margin-top: 4px;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
         }
+
+        input:focus {
+            border-color: #74ebd5;
+            box-shadow: 0 0 5px #74ebd5;
+        }
+
         button {
-            margin-top: 15px;
             width: 100%;
-            padding: 8px;
+            padding: 12px;
+            background-color: #74ebd5;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s;
         }
+
+        button:hover {
+            background-color: #3ea1d9;
+        }
+
         .message {
-            margin-top: 10px;
-            text-align: center;
+            margin-bottom: 15px;
         }
+
         .error {
             color: red;
+            font-weight: bold;
         }
+
         .success {
             color: green;
+            font-weight: bold;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        p a {
+            color: #3ea1d9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        p a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+<div class="register-container">
+    <h2>Ro'yxatdan o'tish</h2>
 
-<h2>Ro'yxatdan o'tish</h2>
+    <!-- Xabarlar -->
+    <div class="message">
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${success}" class="success" th:text="${success}"></div>
+    </div>
 
-<!-- 🔹 Xabarlar (muvaffaqiyat yoki xato) -->
-<div class="message">
-    <div th:if="${error}" class="error" th:text="${error}"></div>
-    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <!-- Ro'yxatdan o'tish formasi -->
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <label for="username">Username:</label>
+        <input id="username" type="text" th:field="*{userName}" placeholder="Foydalanuvchi nomi" required/>
+
+        <label for="password">Password:</label>
+        <input id="password" type="password" th:field="*{password}" placeholder="Parol" required/>
+
+        <label for="fullname">To‘liq ism:</label>
+        <input id="fullname" type="text" th:field="*{fullName}" placeholder="To‘liq ism"/>
+
+        <label for="age">Yosh:</label>
+        <input id="age" type="number" min="1" max="120" th:field="*{age}" placeholder="Yoshingiz"/>
+
+        <button type="submit">Ro'yxatdan o'tish</button>
+    </form>
+
+    <p>
+        Akkauntingiz bormi?
+        <a th:href="@{/login}">Kirish</a>
+    </p>
 </div>
-
-<!-- 🔹 Ro'yxatdan o'tish formasi -->
-<form th:action="@{/register}" th:object="${user}" method="post">
-
-    <label for="username">Username:</label>
-    <input id="username" type="text" th:field="*{userName}" placeholder="Foydalanuvchi nomi" required/>
-
-    <label for="password">Password:</label>
-    <input id="password" type="password" th:field="*{password}" placeholder="Parol" required/>
-
-    <label for="fullname">To‘liq ism:</label>
-    <input id="fullname" type="text" th:field="*{fullName}" placeholder="To‘liq ism"/>
-
-    <label for="age">Yosh:</label>
-    <input id="age" type="number" min="1" max="120" th:field="*{age}" placeholder="Yoshingiz"/>
-
-    <button type="submit">Ro'yxatdan o'tish</button>
-</form>
-
-<p style="text-align:center; margin-top:15px;">
-    Akkauntingiz bormi?
-    <a th:href="@{/login}">Kirish</a>
-</p>
-
 </body>
 </html>
